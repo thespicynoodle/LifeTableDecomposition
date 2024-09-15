@@ -390,18 +390,13 @@ with tab1:
     # Create a DataFrame for plotting
     life_expectancy_df = pd.DataFrame({
         'Year': selected_years,
-        'Life Expectancy at Birth': [life_expectancy_birth[year] for year in selected_years],
-        'Life Expectancy at Age 65': [life_expectancy_65[year] for year in selected_years]
+        'Life Expectancy at Birth': [life_expectancy_birth[year] for year in selected_years]
     })
 
     # Create line chart using Plotly
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=life_expectancy_df['Year'], y=life_expectancy_df['Life Expectancy at Birth'],
                              mode='lines+markers', name='Life Expectancy at Birth'))
-    
-    fig2=go.Figure()
-    fig2.add_trace(go.Scatter(x=life_expectancy_df['Year'], y=life_expectancy_df['Life Expectancy at Age 65'],
-                             mode='lines+markers', name='Life Expectancy at Age 65'))
 
     fig.update_layout(
         title='Life Expectancy at Birth',

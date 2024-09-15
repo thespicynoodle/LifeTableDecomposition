@@ -390,7 +390,7 @@ with tab1:
     # Create a DataFrame for plotting
     life_expectancy_df = pd.DataFrame({
         'Year': selected_years,
-        'Life Expectancy at Birth': [life_expectancy_birth[year] for year in selected_years]
+        'Life Expectancy at Birth': [life_expectancy_birth[year] for year in selected_years],
         'Life Expectancy at Age 65': [life_expectancy_65[year] for year in selected_years]
     })
 

@@ -399,7 +399,7 @@ with tab1:
     fig.add_trace(go.Scatter(x=life_expectancy_df['Year'], y=life_expectancy_df['Life Expectancy at Birth'],
                              mode='lines+markers', name='Life Expectancy at Birth'))
     #fig.add_trace(go.Scatter(x=life_expectancy_df['Year'], y=life_expectancy_df['Life Expectancy at Age 65'],
-                             mode='lines+markers', name='Life Expectancy at Age 65'))
+                             #mode='lines+markers', name='Life Expectancy at Age 65'))
 
     fig.update_layout(
         title='Life Expectancy at Birth',

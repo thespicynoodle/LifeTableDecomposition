@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from supabase import create_client, Client
 import plotly.express as px
 import plotly.graph_objects as go
-
+import io
 # Load environment variables
 load_dotenv()
 st.set_page_config(
@@ -438,3 +438,30 @@ with tab5:
 
     st.write(f"**Data for Year {year2}:**")
     st.dataframe(data_year2)
+
+# Create a BytesIO buffer to hold the Excel file in memory
+output = io.BytesIO()
+
+# Use pandas ExcelWriter to write dataframes to different sheets
+with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+    # Write each DataFrame to a specific sheet
+    life_table1.to_excel(writer, sheet_name=f'Life Table {year1}', index=False)
+    life_table2.to_excel(writer, sheet_name=f'Life Table {year2}', index=False)
+    contribution_df.to_excel(writer, sheet_name='LE Contribution', index=False)
+    risk_factors_by_age1.to_excel(writer, sheet_name=f'Risk Factors {year1}', index=False)
+    risk_factors_by_age2.to_excel(writer, sheet_name=f'Risk Factors {year2}', index=False)
+    pivot_df.to_excel(writer, sheet_name='Risk Factor LE Change', index=False)
+    data_year1.to_excel(writer, sheet_name=f'Raw Data {year1}', index=False)
+    data_year2.to_excel(writer, sheet_name=f'Raw Data {year2}', index=False)
+    # No need to call writer.save() here
+
+# Set the position to the beginning of the stream
+output.seek(0)
+
+# Use st.download_button to allow the user to download the Excel file
+st.download_button(
+    label="Download Results as Excel",
+    data=output,
+    file_name='analysis_results.xlsx',
+    mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+)

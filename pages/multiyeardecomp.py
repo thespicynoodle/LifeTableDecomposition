@@ -385,24 +385,24 @@ with tab1:
 
     # Extract life expectancy at birth (age <1 year) and at age 65
     life_expectancy_birth = {year: life_tables[year].loc[0, 'Expectancy of Life at Age x (ex)'] for year in selected_years}
-    life_expectancy_65 = {year: life_tables[year].loc[15, 'Expectancy of Life at Age x (ex)'] for year in selected_years}
+    #life_expectancy_65 = {year: life_tables[year].loc[15, 'Expectancy of Life at Age x (ex)'] for year in selected_years}
 
     # Create a DataFrame for plotting
     life_expectancy_df = pd.DataFrame({
         'Year': selected_years,
-        'Life Expectancy at Birth': [life_expectancy_birth[year] for year in selected_years],
-        'Life Expectancy at Age 65': [life_expectancy_65[year] for year in selected_years]
+        'Life Expectancy at Birth': [life_expectancy_birth[year] for year in selected_years]
+        #'Life Expectancy at Age 65': [life_expectancy_65[year] for year in selected_years]
     })
 
     # Create line chart using Plotly
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=life_expectancy_df['Year'], y=life_expectancy_df['Life Expectancy at Birth'],
                              mode='lines+markers', name='Life Expectancy at Birth'))
-    fig.add_trace(go.Scatter(x=life_expectancy_df['Year'], y=life_expectancy_df['Life Expectancy at Age 65'],
+    #fig.add_trace(go.Scatter(x=life_expectancy_df['Year'], y=life_expectancy_df['Life Expectancy at Age 65'],
                              mode='lines+markers', name='Life Expectancy at Age 65'))
 
     fig.update_layout(
-        title='Life Expectancy at Birth and Age 65 Over Time',
+        title='Life Expectancy at Birth',
         xaxis_title='Year',
         yaxis_title='Life Expectancy (years)',
         legend_title='Age'

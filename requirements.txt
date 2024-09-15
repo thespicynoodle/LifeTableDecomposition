@@ -1,6 +1,6 @@
-streamlit==1.24.1
-pandas==2.1.0
-numpy==1.25.2
-python-dotenv==1.0.0
-supabase-py==0.7.0
-plotly==5.17.0
+streamlit
+pandas
+numpy
+python-dotenv
+supabase
+plotly

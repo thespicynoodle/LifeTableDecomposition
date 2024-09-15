@@ -151,7 +151,7 @@ def calculate_risk_factor_proportions_by_age(total_deaths, tobacco_deaths, alcoh
             'Tobacco': tob_prop,
             'Alcohol': alc_prop,
             'Drugs': drug_prop,
-            'Other Risk Factors': oth_prop
+            'Deaths not attributable to Tobacco, Alcohol and Drug use': oth_prop
         })
 
     df = pd.DataFrame(proportions)
@@ -181,8 +181,8 @@ def plot_risk_factors_by_age(df, year):
     ))
     fig.add_trace(go.Bar(
         x=df['Age'],
-        y=df['Other Risk Factors'],
-        name='Other Risk Factors',
+        y=df['Deaths not attributable to Tobacco, Alcohol and Drug use'],
+        name='Deaths not attributable to Tobacco, Alcohol and Drug use',
         marker_color='lightgreen'
     ))
 
@@ -204,10 +204,10 @@ def calculate_risk_factor_contributions(life_table1, life_table2, deaths1, death
 
     # Prepare risk factor proportions
     rf_df1_renamed = rf_df1.copy()
-    rf_df1_renamed.columns = ['Age', 'Tobacco Proportion Year 1', 'Alcohol Proportion Year 1', 'Drugs Proportion Year 1', 'Other Risk Factors Proportion Year 1']
+    rf_df1_renamed.columns = ['Age', 'Tobacco Proportion Year 1', 'Alcohol Proportion Year 1', 'Drugs Proportion Year 1', 'Deaths not attributable to Tobacco, Alcohol and Drug use Proportion Year 1']
 
     rf_df2_renamed = rf_df2.copy()
-    rf_df2_renamed.columns = ['Age', 'Tobacco Proportion Year 2', 'Alcohol Proportion Year 2', 'Drugs Proportion Year 2', 'Other Risk Factors Proportion Year 2']
+    rf_df2_renamed.columns = ['Age', 'Tobacco Proportion Year 2', 'Alcohol Proportion Year 2', 'Drugs Proportion Year 2', 'Deaths not attributable to Tobacco, Alcohol and Drug use Proportion Year 2']
 
     # Extract delta_x
     contribution_df = calculate_life_expectancy_contribution(life_table1, life_table2)
@@ -221,7 +221,7 @@ def calculate_risk_factor_contributions(life_table1, life_table2, deaths1, death
     merged_df = merged_df.merge(delta_x_df, on='Age')
 
     # Compute risk factor contributions
-    risk_factors = ['Tobacco', 'Alcohol', 'Drugs', 'Other Risk Factors']
+    risk_factors = ['Tobacco', 'Alcohol', 'Drugs', 'Deaths not attributable to Tobacco, Alcohol and Drug use']
     contributions = []
 
     for index, row in merged_df.iterrows():
@@ -321,7 +321,7 @@ age_groups = ['<1 year', '12-23 months', '2-4 years', '5-9 years', '10-14 years'
               '55-59 years', '60-64 years', '65-69 years', '70-74 years', '75-79 years', '80-84 years',
               '85-89 years', '90-94 years', '95+ years']
 
-risk_factors = ['Tobacco', 'Alcohol', 'Drugs', 'Other Risk Factors']
+risk_factors = ['Tobacco', 'Alcohol', 'Drugs', 'Deaths not attributable to Tobacco, Alcohol and Drug use']
 
 # Data retrieval and processing
 data_years = {}

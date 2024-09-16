@@ -457,63 +457,82 @@ with tab2:
             st.dataframe(contribution_df)
                     # Add a divider or border between sections
             st.markdown("<hr style='border: 1px solid #ccc;'/>", unsafe_allow_html=True)
+# Tab 3: Risk Factor Proportions by Age Group
 with tab3:
     st.subheader('Risk Factor Proportions by Age Group')
+
+    # Create two columns: one for charts (left) and one for tables (right)
+    col1, col2 = st.columns([2, 1])
+
     for year in selected_years:
         rf_df = risk_factors_by_age[year]
-        st.write(f"**Risk Factor Proportions for Year {year}:**")
-        st.dataframe(rf_df)
-        st.plotly_chart(plot_risk_factors_by_age(rf_df, year))
 
+        # Left column for charts
+        with col1:
+            st.write(f"**Risk Factor Proportions for Year {year}:**")
+            st.plotly_chart(plot_risk_factors_by_age(rf_df, year))
+
+            # Add a divider between sections
+            st.markdown("<hr style='border: 1px solid #ccc;'/>", unsafe_allow_html=True)
+
+        # Right column for tables
+        with col2:
+            st.dataframe(rf_df)
+
+            # Add a divider between sections
+            st.markdown("<hr style='border: 1px solid #ccc;'/>", unsafe_allow_html=True)
+
+
+# Tab 4: Risk Factor Contributions to Life Expectancy Change
 with tab4:
     st.subheader('Risk Factor Contributions to Life Expectancy Change')
 
+    # Create two columns: one for charts (left) and one for tables (right)
+    col1, col2 = st.columns([2, 1])
+
     for key, pivot_df in risk_factor_contributions.items():
         year1, year2 = key.split('-')
-        st.write(f"**Risk Factor Contributions from {year1} to {year2}:**")
-        st.dataframe(pivot_df)
 
+        # Left column for charts
+        with col1:
+            st.write(f"**Risk Factor Contributions from {year1} to {year2}:**")
 
-        # Exclude the total row for plotting
-        plot_df = pivot_df[pivot_df['Age'] != 'Total']
+            # Exclude the total row for plotting
+            plot_df = pivot_df[pivot_df['Age'] != 'Total']
 
-        # Ensure 'Age' is a categorical variable ordered from youngest to oldest
-        plot_df['Age'] = pd.Categorical(plot_df['Age'], categories=age_groups, ordered=True)
+            # Ensure 'Age' is a categorical variable ordered from youngest to oldest
+            plot_df['Age'] = pd.Categorical(plot_df['Age'], categories=age_groups, ordered=True)
+            plot_df = plot_df.sort_values('Age')
 
-        # Sort the DataFrame by 'Age'
-        plot_df = plot_df.sort_values('Age')
+            # Melt the DataFrame for plotting
+            plot_df_melted = plot_df.melt(id_vars='Age', value_vars=risk_factors, var_name='Risk Factor', value_name='Contribution')
+            plot_df_melted = plot_df_melted.sort_values('Age')
 
-        # Melt the DataFrame for plotting
-        plot_df_melted = plot_df.melt(id_vars='Age', value_vars=risk_factors, var_name='Risk Factor', value_name='Contribution')
+            # Create the stacked bar chart
+            fig = px.bar(
+                plot_df_melted,
+                x='Age',
+                y='Contribution',
+                color='Risk Factor',
+                title=f'Risk Factor Contributions to LE Change from {year1} to {year2}',
+                labels={'Contribution': 'Contribution to LE Difference (years)'},
+                category_orders={'Age': age_groups}
+            )
+            st.plotly_chart(fig)
 
-        # Sort the melted DataFrame by 'Age'
-        plot_df_melted = plot_df_melted.sort_values('Age')
+            # Add a divider between sections
+            st.markdown("<hr style='border: 1px solid #ccc;'/>", unsafe_allow_html=True)
 
-        # Create a stacked bar chart
-        fig = px.bar(
-            plot_df_melted,
-            x='Age',
-            y='Contribution',
-            color='Risk Factor',
-            title=f'Risk Factor Contributions to LE Change from {year1} to {year2}',
-            labels={'Contribution': 'Contribution to LE Difference (years)'},
-            category_orders={'Age': age_groups}
-        )
-        st.plotly_chart(fig)
+        # Right column for tables
+        with col2:
+            st.dataframe(pivot_df)
 
+            # Calculate total life expectancy change
+            total_le_change = pivot_df.loc[pivot_df['Age'] == 'Total', risk_factors].sum(axis=1).values[0]
+            st.write(f"**Total Life Expectancy Change from {year1} to {year2}: {total_le_change:.2f} years**")
 
-        # Calculate total life expectancy change
-        total_le_change = pivot_df.loc[pivot_df['Age'] == 'Total', risk_factors].sum(axis=1).values[0]
-
-        # Calculate total percentage of life expectancy change per risk factor
-        total_percentage_change = pivot_df.loc[pivot_df['Age'] == 'Total', risk_factors] / total_le_change * 100
-
-        # Display total percentage change and total LE change
-        #st.write("**Total Percentage Contribution of Risk Factors:**")
-        #st.dataframe(total_percentage_change)
-
-        st.write(f"**Total Life Expectancy Change from {year1} to {year2}: {total_le_change:.2f} years**")
-
+            # Add a divider between sections
+            st.markdown("<hr style='border: 1px solid #ccc;'/>", unsafe_allow_html=True)
 with tab5:
     st.subheader('Raw Data from Supabase')
     for year in selected_years:

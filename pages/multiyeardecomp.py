@@ -419,30 +419,37 @@ with tab1:
 
 with tab2:
     st.subheader('Life Expectancy Changes and Contributions')
+
+    # Create two columns: one for charts (left) and one for tables (right)
+    col1, col2 = st.columns([2, 1])  # Adjust the ratio as needed (2:1 for wider chart column)
+
     for key, contribution_df in contribution_dfs.items():
         year1, year2 = key.split('-')
-        st.write(f"**Contribution from {year1} to {year2}:**")
 
-        # Exclude the total row from plotting
-        contribution_plot_df = contribution_df[contribution_df['Age'] != 'Life expectancy difference']
+        # Left column for charts
+        with col1:
+            st.write(f"**Contribution from {year1} to {year2}:**")
+            # Exclude the total row from plotting
+            contribution_plot_df = contribution_df[contribution_df['Age'] != 'Life expectancy difference']
 
-        # Create the bar chart using Plotly Express
-        fig = px.bar(
-            contribution_plot_df,
-            x='Age',
-            y='Contribution to LE difference (years)',
-            title=f'Contribution of Age Groups to Life Expectancy Change from {year1} to {year2}',
-            labels={'Contribution to LE difference (years)': 'Years'}
-        )
-        st.plotly_chart(fig)
+            # Create the bar chart using Plotly Express
+            fig = px.bar(
+                contribution_plot_df,
+                x='Age',
+                y='Contribution to LE difference (years)',
+                title=f'Contribution of Age Groups to Life Expectancy Change from {year1} to {year2}',
+                labels={'Contribution to LE difference (years)': 'Years'}
+            )
+            st.plotly_chart(fig)
 
-        # Display the total life expectancy difference
-        total_difference = contribution_df[contribution_df['Age'] == 'Life expectancy difference']['Contribution to LE difference (years)'].values[0]
-        st.write(f"**Total Life Expectancy Difference from {year1} to {year2}:** {total_difference:.4f} years")
+        # Right column for tables
+        with col2:
+            # Display the total life expectancy difference
+            total_difference = contribution_df[contribution_df['Age'] == 'Life expectancy difference']['Contribution to LE difference (years)'].values[0]
+            st.write(f"**Total Life Expectancy Difference from {year1} to {year2}:** {total_difference:.4f} years")
 
-        # Display the DataFrame
-        st.dataframe(contribution_df)
-
+            # Display the DataFrame
+            st.dataframe(contribution_df)
 with tab3:
     st.subheader('Risk Factor Proportions by Age Group')
     for year in selected_years:

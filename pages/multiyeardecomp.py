@@ -426,8 +426,7 @@ with tab2:
     for key, contribution_df in contribution_dfs.items():
         year1, year2 = key.split('-')
 
-        # Add a divider or border between sections
-        st.markdown("<hr style='border: 1px solid #ccc;'/>", unsafe_allow_html=True)
+
 
         # Left column for charts
         with col1:
@@ -445,6 +444,9 @@ with tab2:
             )
             st.plotly_chart(fig)
 
+                # Add a divider or border between sections
+            st.markdown("<hr style='border: 1px solid #ccc;'/>", unsafe_allow_html=True)
+
         # Right column for tables
         with col2:
             # Display the total life expectancy difference
@@ -453,6 +455,8 @@ with tab2:
 
             # Display the DataFrame
             st.dataframe(contribution_df)
+                    # Add a divider or border between sections
+            st.markdown("<hr style='border: 1px solid #ccc;'/>", unsafe_allow_html=True)
 with tab3:
     st.subheader('Risk Factor Proportions by Age Group')
     for year in selected_years:

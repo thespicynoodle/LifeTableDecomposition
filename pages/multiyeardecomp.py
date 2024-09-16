@@ -457,6 +457,7 @@ with tab4:
 
 
         total_difference = contribution_df[contribution_df['Age'] == 'Life expectancy difference']['Contribution to LE difference (years)'].values[0]
+        st.write(f"**Total Life Expectancy Difference from {year1} to {year2}:** {total_difference:.4f} years")
         # Exclude the total row for plotting
         plot_df = pivot_df[pivot_df['Age'] != 'Total']
 

@@ -487,6 +487,19 @@ with tab4:
         )
         st.plotly_chart(fig)
 
+
+        # Calculate total life expectancy change
+        total_le_change = pivot_df.loc[pivot_df['Age'] == 'Total', risk_factors].sum(axis=1).values[0]
+
+        # Calculate total percentage of life expectancy change per risk factor
+        total_percentage_change = pivot_df.loc[pivot_df['Age'] == 'Total', risk_factors] / total_le_change * 100
+
+        # Display total percentage change and total LE change
+        st.write("**Total Percentage Contribution of Risk Factors:**")
+        st.dataframe(total_percentage_change)
+
+        st.write(f"**Total Life Expectancy Change from {year1} to {year2}: {total_le_change:.2f} years**")
+
 with tab5:
     st.subheader('Raw Data from Supabase')
     for year in selected_years:

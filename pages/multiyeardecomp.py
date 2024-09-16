@@ -495,8 +495,8 @@ with tab4:
         total_percentage_change = pivot_df.loc[pivot_df['Age'] == 'Total', risk_factors] / total_le_change * 100
 
         # Display total percentage change and total LE change
-        st.write("**Total Percentage Contribution of Risk Factors:**")
-        st.dataframe(total_percentage_change)
+        #st.write("**Total Percentage Contribution of Risk Factors:**")
+        #st.dataframe(total_percentage_change)
 
         st.write(f"**Total Life Expectancy Change from {year1} to {year2}: {total_le_change:.2f} years**")
 

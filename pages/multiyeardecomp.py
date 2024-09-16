@@ -426,6 +426,9 @@ with tab2:
     for key, contribution_df in contribution_dfs.items():
         year1, year2 = key.split('-')
 
+        # Add a divider or border between sections
+        st.markdown("<hr style='border: 1px solid #ccc;'/>", unsafe_allow_html=True)
+
         # Left column for charts
         with col1:
             st.write(f"**Contribution from {year1} to {year2}:**")

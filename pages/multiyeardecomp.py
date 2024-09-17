@@ -527,11 +527,13 @@ with tab4:
         # Right column for tables
         with col2:
 
+            st.write(f"**Risk Factor Contributions from {year1} to {year2}:**")
+
             st.write(f"**Total Life Expectancy Change from {year1} to {year2}: {total_le_change:.2f} years**")
             
             st.dataframe(pivot_df)
 
-            st.write(f"**Risk Factor Contributions from {year1} to {year2}:**")
+            
 
             # Calculate total life expectancy change
             total_le_change = pivot_df.loc[pivot_df['Age'] == 'Total', risk_factors].sum(axis=1).values[0]

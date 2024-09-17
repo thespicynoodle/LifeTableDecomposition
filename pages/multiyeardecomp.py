@@ -423,45 +423,39 @@ with tab2:
     # Create two columns: one for charts (left) and one for tables (right)
     col1, col2 = st.columns([2, 1])  # Adjust the ratio as needed (2:1 for wider chart column)
 
-    # Create an empty DataFrame to accumulate all contributions
-    combined_contributions = pd.DataFrame()
-
     for key, contribution_df in contribution_dfs.items():
         year1, year2 = key.split('-')
-        contribution_plot_df = contribution_df[contribution_df['Age'] != 'Life expectancy difference'].copy()
-        contribution_plot_df['Year'] = f"{year1}-{year2}"
 
-        # Append to the combined DataFrame
-        combined_contributions = pd.concat([combined_contributions, contribution_plot_df])
+
 
         # Left column for charts
         with col1:
             st.write(f"**Contribution from {year1} to {year2}:**")
+            # Exclude the total row from plotting
+            contribution_plot_df = contribution_df[contribution_df['Age'] != 'Life expectancy difference']
 
-            # Create the stacked bar chart using Plotly Express
+            # Create the bar chart using Plotly Express
             fig = px.bar(
-                combined_contributions,
-                x='Year',
+                contribution_plot_df,
+                x='Age',
                 y='Contribution to LE difference (years)',
-                color='Age',  # Color by age group for stacked bars
-                title=f'Contribution of Age Groups to Life Expectancy Change Over Selected Years',
+                title=f'Contribution of Age Groups to Life Expectancy Change from {year1} to {year2}',
                 labels={'Contribution to LE difference (years)': 'Years'}
             )
             st.plotly_chart(fig)
 
-            # Add a divider or border between sections
+                # Add a divider or border between sections
             st.markdown("<hr style='border: 1px solid #ccc;'/>", unsafe_allow_html=True)
 
         # Right column for tables
         with col2:
-            # Display the total life expectancy difference for each year
+            # Display the total life expectancy difference
             total_difference = contribution_df[contribution_df['Age'] == 'Life expectancy difference']['Contribution to LE difference (years)'].values[0]
             st.write(f"**Total Life Expectancy Difference from {year1} to {year2}:** {total_difference:.4f} years")
 
-            # Display the DataFrame for the current period
+            # Display the DataFrame
             st.dataframe(contribution_df)
-
-            # Add a divider or border between sections
+                    # Add a divider or border between sections
             st.markdown("<hr style='border: 1px solid #ccc;'/>", unsafe_allow_html=True)
 # Tab 3: Risk Factor Proportions by Age Group
 with tab3:

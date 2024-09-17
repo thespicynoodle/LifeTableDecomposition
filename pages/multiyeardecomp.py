@@ -527,8 +527,6 @@ with tab4:
         # Right column for tables
         with col2:
 
-            st.write(f"**Risk Factor Contributions from {year1} to {year2}:**")
-
             st.write(f"**Total Life Expectancy Change from {year1} to {year2}: {total_le_change:.2f} years**")
             
             st.dataframe(pivot_df)

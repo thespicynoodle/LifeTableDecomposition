@@ -308,11 +308,11 @@ genders = ['Male', 'Female']
 
 st.sidebar.title('Filters')
 
-# First Country selector
-country_1 = st.sidebar.selectbox('Select First Country', countries)
+# First Country selector (default set to 'Australia')
+country_1 = st.sidebar.selectbox('Select First Country', countries, index=countries.index('Australia'))
 
-# Second Country selector
-country_2 = st.sidebar.selectbox('Select Second Country', countries)
+# Second Country selector (default set to 'United States of America')
+country_2 = st.sidebar.selectbox('Select Second Country', countries, index=countries.index('United States of America'))
 
 # Gender selector (for both countries, assuming the comparison will be done between same gender)
 gender = st.sidebar.selectbox('Select Gender', genders)

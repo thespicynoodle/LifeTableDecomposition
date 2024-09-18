@@ -14,6 +14,5 @@ def main():
     # Main content of the app
   st.title("LifeTable Exploration Tool")
   st.write("Use the navigation on the left to browse different pages.")
-  st.write(update_time())
 if __name__ == "__main__":
     main()

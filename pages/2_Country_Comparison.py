@@ -426,16 +426,16 @@ with tab4:
     col1, col2 = st.columns([2, 1])
 
     with col1:
-        st.write(f"**Risk Factor Contributions to Life Expectancy Change ({country_1} vs {country_2}) in {year}:**")
+        st.write(f"**Risk Factor Contributions to Life Expectancy Difference ({country_1} vs {country_2}) in {year}:**")
         plot_df = pivot_df[pivot_df['Age'] != 'Total']
         fig = px.bar(plot_df.melt(id_vars='Age', value_vars=risk_factors, var_name='Risk Factor', value_name='Contribution'),
                      x='Age', y='Contribution', color='Risk Factor',
-                     title=f'Risk Factor Contributions to Life Expectancy Change ({country_1} vs {country_2}) in {year}')
+                     title=f'Risk Factor Contributions to Life Expectancy Difference ({country_1} vs {country_2}) in {year}')
         st.plotly_chart(fig)
 
     with col2:
         total_le_change = pivot_df.loc[pivot_df['Age'] == 'Total', risk_factors].sum(axis=1).values[0]
-        st.write(f"**Total Life Expectancy Change:** {total_le_change:.2f} years")
+        st.write(f"**Total Life Expectancy Difference:** {total_le_change:.2f} years")
         st.dataframe(pivot_df)
 
 with tab5:

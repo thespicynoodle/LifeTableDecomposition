@@ -426,35 +426,16 @@ with tab4:
 
     with col1:
         st.write(f"**Risk Factor Contributions to Life Expectancy Difference ({country_1} vs {country_2}) in {year}:**")
-        
-        # Exclude the 'Total' row for the bar chart
         plot_df = pivot_df[pivot_df['Age'] != 'Total']
-        
-        # Create a bar chart for the contributions
         fig = px.bar(plot_df.melt(id_vars='Age', value_vars=risk_factors, var_name='Risk Factor', value_name='Contribution'),
                      x='Age', y='Contribution', color='Risk Factor',
                      title=f'Risk Factor Contributions to Life Expectancy Difference ({country_1} vs {country_2}) in {year}')
         st.plotly_chart(fig)
 
     with col2:
-        # Calculate the total life expectancy change
         total_le_change = pivot_df.loc[pivot_df['Age'] == 'Total', risk_factors].sum(axis=1).values[0]
         st.write(f"**Total Life Expectancy Difference:** {total_le_change:.2f} years")
-        
-        # Add a row for percentage contribution
-        percentage_contributions = pivot_df[risk_factors].sum() / total_le_change * 100
-        
-        # Create a new row for percentage contribution
-        percentage_row = pd.DataFrame({
-            'Age': ['Percentage Contribution'],
-            **{risk_factor: [percentage_contributions[risk_factor]] for risk_factor in risk_factors}
-        })
-        
-        # Append the percentage row to the pivot_df DataFrame
-        pivot_df_with_percentage = pd.concat([pivot_df, percentage_row], ignore_index=True)
-
-        # Display the DataFrame with the percentage row
-        st.dataframe(pivot_df_with_percentage)
+        st.dataframe(pivot_df)
 
 with tab5:
     st.subheader('Raw Data from Supabase')

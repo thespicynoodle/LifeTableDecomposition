@@ -46,6 +46,7 @@ def calculate_life_table(deaths, population):
 
     df['Probability of Dying (nqx)'] = df['Years in Interval (n)'] * df['Mortality Rate (nmx)'] / \
                                        (1 + (1 - df['Linearity Adjustment (nax)']) * df['Mortality Rate (nmx)'] * df['Years in Interval (n)'])
+    df.at[len(df)-1, 'Probability of Dying (nqx)'] = 1
 
     df['Probability of Surviving (npx)'] = 1 - df['Probability of Dying (nqx)']
 

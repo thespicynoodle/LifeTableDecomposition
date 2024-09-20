@@ -377,14 +377,52 @@ for i in range(len(selected_years)-1):
     )
     risk_factor_contributions[f"{year1}-{year2}"] = pivot_df
 
+
+# collated table for life expectancy chane and contributions
+# Create a new DataFrame to hold the summary of contributions for each period
+contribution_summary = []
+
+for key, pivot_df in risk_factor_contributions.items():
+    year1, year2 = key.split('-')
+    
+    # Total life expectancy difference for the period
+    total_le_change = pivot_df.loc[pivot_df['Age'] == 'Total', risk_factors].sum(axis=1).values[0]
+    
+    # Calculate the number of years and percentage for each risk factor
+    tobacco_years = pivot_df.loc[pivot_df['Age'] == 'Total', 'Tobacco'].values[0]
+    alcohol_years = pivot_df.loc[pivot_df['Age'] == 'Total', 'Alcohol'].values[0]
+    drugs_years = pivot_df.loc[pivot_df['Age'] == 'Total', 'Drugs'].values[0]
+    other_years = pivot_df.loc[pivot_df['Age'] == 'Total', 'Deaths not attributable to Tobacco, Alcohol and Drug use'].values[0]
+
+    # Calculate percentages
+    tobacco_percentage = (tobacco_years / total_le_change) * 100 if total_le_change != 0 else 0
+    alcohol_percentage = (alcohol_years / total_le_change) * 100 if total_le_change != 0 else 0
+    drugs_percentage = (drugs_years / total_le_change) * 100 if total_le_change != 0 else 0
+    other_percentage = (other_years / total_le_change) * 100 if total_le_change != 0 else 0
+    
+    # Append to the contribution summary
+    contribution_summary.append({
+        'Year Period': f'{year1}-{year2}',
+        'Life Expectancy Difference': total_le_change,
+        'Tobacco Years Contributed': tobacco_years,
+        'Tobacco Percentage': tobacco_percentage,
+        'Alcohol Years Contributed': alcohol_years,
+        'Alcohol Percentage': alcohol_percentage,
+        'Drugs Years Contributed': drugs_years,
+        'Drugs Percentage': drugs_percentage,
+        'Other Years Contributed': other_years,
+        'Other Percentage': other_percentage
+    })
+
+# Convert to DataFrame
+contribution_summary_df = pd.DataFrame(contribution_summary)
 # Streamlit App Layout
 
 st.title('Life Expectancy Analysis Dashboard')
 
 st.header(f'Analysis for {country} - {gender}')
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs(['Life Tables', 'Life Expectancy Change Contribution', 'Risk Factor Proportions', 'Risk Factor Contributions to LE Change', 'Raw Data'])
-
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(['Life Tables', 'Life Expectancy Change Contribution', 'Risk Factor Proportions', 'Risk Factor Contributions to LE Change', 'Life Expectancy Contribution Summary', 'Raw Data'])
 with tab1:
     st.subheader('Life Expectancy Overview')
 
@@ -546,6 +584,36 @@ with tab4:
             # Add a divider between sections
             st.markdown("<hr style='border: 1px solid #ccc;'/>", unsafe_allow_html=True)
 with tab5:
+    st.subheader('Life Expectancy Contribution Summary')
+
+    # Display the contribution summary table
+    st.write("**Summary of Life Expectancy Contributions**")
+    st.dataframe(contribution_summary_df)
+
+    # Stacked bar chart for contributions
+    st.write("**Stacked Bar Chart of Life Expectancy Contributions**")
+    
+    # Prepare the DataFrame for the stacked bar chart
+    stacked_df = contribution_summary_df.melt(
+        id_vars=['Year Period', 'Life Expectancy Difference'],
+        value_vars=['Tobacco Years Contributed', 'Alcohol Years Contributed', 'Drugs Years Contributed', 'Other Years Contributed'],
+        var_name='Risk Factor',
+        value_name='Years Contributed'
+    )
+    
+    # Create the stacked bar chart using Plotly
+    fig = px.bar(
+        stacked_df,
+        x='Year Period',
+        y='Years Contributed',
+        color='Risk Factor',
+        title='Proportion of Life Expectancy Change Attributable to Each Risk Factor',
+        labels={'Years Contributed': 'Years Contributed'}
+    )
+    
+    st.plotly_chart(fig)
+
+with tab6:
     st.subheader('Raw Data from Supabase')
     for year in selected_years:
         st.write(f"**Data for Year {year}:**")

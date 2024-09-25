@@ -577,10 +577,15 @@ with tab5:
         stacked_df,
         x='Year',
         y='Years Contributed',
+        barmode ='group'
         color='Risk Factor',
         title=f'Proportion of Life Expectancy Change Attributable to Each Risk Factor Over Selected Years',
         labels={'Years Contributed': 'Years Contributed'}
     )
+    fig.update_layout(
+        bargap=0.15,  # Adjust the gap between bars
+        bargroupgap=0.1  # Adjust the gap between groups
+)
 
     st.plotly_chart(fig)
 

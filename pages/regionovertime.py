@@ -506,6 +506,7 @@ with tab2:
                 x='Age',
                 y='Contribution to LE difference (years)',
                 title=f'Contribution of Age Groups to Life Expectancy Change from {year1} to {year2}',
+                barmode='group',
                 labels={'Contribution to LE difference (years)': 'Years'}
             )
             st.plotly_chart(fig)
@@ -627,6 +628,7 @@ with tab5:
         x='Year Period',
         y='Years Contributed',
         color='Risk Factor',
+        barmode='group',
         title='Proportion of Life Expectancy Change Attributable to Each Risk Factor',
         labels={'Years Contributed': 'Years Contributed'}
     )

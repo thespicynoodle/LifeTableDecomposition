@@ -545,7 +545,7 @@ with tab4:
         st.write(f"**Risk Factor Contributions to Life Expectancy Difference ({location_1} vs {location_2}) in {year_to_display}:**")
         plot_df = pivot_df_display[pivot_df_display['Age'] != 'Total']
         fig = px.bar(plot_df.melt(id_vars='Age', value_vars=risk_factors, var_name='Risk Factor', value_name='Contribution'),
-                     x='Age', y='Contribution', color='Risk Factor',
+                     x='Age', y='Contribution', color='Risk Factor', barmode='group',
                      title=f'Risk Factor Contributions to Life Expectancy Difference ({location_1} vs {location_2}) in {year_to_display}')
         st.plotly_chart(fig)
 
@@ -569,6 +569,7 @@ with tab5:
         id_vars=['Year', 'Location Comparison', 'Life Expectancy Difference'],
         value_vars=['Tobacco Years Contributed', 'Alcohol Years Contributed', 'Drugs Years Contributed', 'Other Years Contributed'],
         var_name='Risk Factor',
+        barmode='group',
         value_name='Years Contributed'
     )
 

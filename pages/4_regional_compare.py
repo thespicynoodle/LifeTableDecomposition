@@ -577,7 +577,7 @@ with tab5:
         stacked_df,
         x='Year',
         y='Years Contributed',
-        barmode ='group'
+        barmode ='group',
         color='Risk Factor',
         title=f'Proportion of Life Expectancy Change Attributable to Each Risk Factor Over Selected Years',
         labels={'Years Contributed': 'Years Contributed'}

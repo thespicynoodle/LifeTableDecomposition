@@ -578,6 +578,7 @@ with tab4:
                 plot_df_melted,
                 x='Age',
                 y='Contribution',
+                barmode='group',
                 color='Risk Factor',
                 title=f'Risk Factor Contributions to LE Change from {year1} to {year2}',
                 labels={'Contribution': 'Contribution to LE Difference (years)'},

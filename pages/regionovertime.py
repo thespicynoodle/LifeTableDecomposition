@@ -344,15 +344,23 @@ genders = ['Male', 'Female']
 st.sidebar.title('Filters')
 
 # Location type selector
-location_type = st.sidebar.selectbox('Select Location Type', ['Country', 'Region'])
+location_type = st.sidebar.selectbox('Select Location Type', ['Country', 'Region'], key='location_type_select')
 
 # Based on the selection, display the appropriate options
 if location_type == 'Country':
-    # Country selector
-    location = st.sidebar.selectbox('Select Country', countries)
+    # Country selector with a unique key
+    location = st.sidebar.selectbox('Select Country', countries, key='country_select')
 else:
-    # Region selector
-    location = st.sidebar.selectbox('Select Region', regions)
+    # Region selector with a unique key
+    location = st.sidebar.selectbox('Select Region', regions, key='region_select')
+
+# Gender selector with a unique key
+gender = st.sidebar.selectbox('Select Gender', genders, key='gender_select')
+
+# Year selector with a unique key
+selected_years = st.sidebar.multiselect('Select Years (up to 7)', years, default=[1990, 2000, 2010, 2020], key='years_select')
+if len(selected_years) > 7:
+    st.sidebar.error("Please select up to 7 years.")
 
 # Gender selector
 gender = st.sidebar.selectbox('Select Gender', genders)

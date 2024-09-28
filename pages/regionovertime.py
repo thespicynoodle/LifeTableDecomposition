@@ -323,7 +323,15 @@ def get_regions():
     regions = data['region'].unique().tolist()
     return regions
 
-regions = get_regions()
+#regions = get_regions()
+regions = [
+'United Kingdom',
+'Australia',
+'High-Income Mainland Europe',
+'High-Income North America',
+'High-Income East Asia',
+'Nordic Countries'    
+]
 
 # Define the list of years
 years = list(range(1990, 2022))  # Years from 1990 to 2021

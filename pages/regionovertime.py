@@ -316,24 +316,14 @@ countries = [
 ]
 
 # Get unique regions from the database
-# Get unique regions from the database
 @st.cache_data
 def get_regions():
     response = supabase.table('PopulationData').select('region').execute()
     data = pd.DataFrame(response.data)
-    
-    # Filter out None or empty regions and drop duplicates
-    data = data[data['region'].notnull() & (data['region'] != '')]
-    
-    # Ensure regions are unique and consistent (lowercase or titlecase to standardize)
-    regions = data['region'].str.title().unique().tolist()
-    
+    regions = data['region'].unique().tolist()
     return regions
 
 regions = get_regions()
-
-# Use these regions in the selection box
-selected_region = st.sidebar.selectbox('Select Region', regions)
 
 # Define the list of years
 years = list(range(1990, 2022))  # Years from 1990 to 2021
@@ -344,23 +334,15 @@ genders = ['Male', 'Female']
 st.sidebar.title('Filters')
 
 # Location type selector
-location_type = st.sidebar.selectbox('Select Location Type', ['Country', 'Region'], key='location_type_select')
+location_type = st.sidebar.selectbox('Select Location Type', ['Country', 'Region'])
 
 # Based on the selection, display the appropriate options
 if location_type == 'Country':
-    # Country selector with a unique key
-    location = st.sidebar.selectbox('Select Country', countries, key='country_select')
+    # Country selector
+    location = st.sidebar.selectbox('Select Country', countries)
 else:
-    # Region selector with a unique key
-    location = st.sidebar.selectbox('Select Region', regions, key='region_select')
-
-# Gender selector with a unique key
-gender = st.sidebar.selectbox('Select Gender', genders, key='gender_select')
-
-# Year selector with a unique key
-selected_years = st.sidebar.multiselect('Select Years (up to 7)', years, default=[1990, 2000, 2010, 2020], key='years_select')
-if len(selected_years) > 7:
-    st.sidebar.error("Please select up to 7 years.")
+    # Region selector
+    location = st.sidebar.selectbox('Select Region', regions)
 
 # Gender selector
 gender = st.sidebar.selectbox('Select Gender', genders)
@@ -710,3 +692,4 @@ st.download_button(
     file_name='analysis_results.xlsx',
     mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 )
+

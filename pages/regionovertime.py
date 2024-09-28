@@ -316,14 +316,24 @@ countries = [
 ]
 
 # Get unique regions from the database
+# Get unique regions from the database
 @st.cache_data
 def get_regions():
     response = supabase.table('PopulationData').select('region').execute()
     data = pd.DataFrame(response.data)
-    regions = data['region'].unique().tolist()
+    
+    # Filter out None or empty regions and drop duplicates
+    data = data[data['region'].notnull() & (data['region'] != '')]
+    
+    # Ensure regions are unique and consistent (lowercase or titlecase to standardize)
+    regions = data['region'].str.title().unique().tolist()
+    
     return regions
 
 regions = get_regions()
+
+# Use these regions in the selection box
+selected_region = st.sidebar.selectbox('Select Region', regions)
 
 # Define the list of years
 years = list(range(1990, 2022))  # Years from 1990 to 2021

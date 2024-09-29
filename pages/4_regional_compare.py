@@ -577,7 +577,7 @@ with tab5:
     # Prepare the DataFrame for the stacked bar chart
     stacked_df = contribution_summary_df.melt(
         id_vars=['Year', 'Location Comparison', 'Life Expectancy Difference'],
-        value_vars=['Tobacco Years Contributed', 'Alcohol Years Contributed', 'Drugs Years Contributed', 'Other Years Contributed'],
+        value_vars=['Tobacco Years Contributed', 'Alcohol Years Contributed', 'Drugs Years Contributed', 'Deaths not attributable to Tobacco, Alcohol and Drug use'],
         var_name='Risk Factor',
         value_name='Years Contributed'
     )

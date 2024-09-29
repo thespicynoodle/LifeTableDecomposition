@@ -447,8 +447,8 @@ for key, pivot_df in risk_factor_contributions.items():
         'Alcohol Percentage': alcohol_percentage,
         'Drugs Years Contributed': drugs_years,
         'Drugs Percentage': drugs_percentage,
-        'Other Years Contributed': other_years,
-        'Other Percentage': other_percentage
+        'Deaths not attributable to Tobacco, Alcohol and Drug use': other_years,
+        'Deaths not attributable to Tobacco, Alcohol and Drug use Percentage': other_percentage
     })
 
 # Convert to DataFrame

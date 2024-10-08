@@ -375,7 +375,7 @@ gender = st.sidebar.selectbox('Select Gender', genders)
 years_selected = st.sidebar.multiselect(
     'Select Years',
     years,
-    default=[1990, 1995, 2000, 2005, 2010, 2015, 2020, 2021]
+    default=[1990, 1995, 2000, 2005, 2010, 2015, 2019,2020, 2021]
 )
 
 if len(years_selected) > 1:
